@@ -36,8 +36,11 @@ app.use(express.json());
 
 app.use("/friends", function auth(req, res, next) {
   if (req.session.authorization) {
-    token = req.session.authorization["accessToken"];
+    console.log(`Inside friends auth`);
+    let token = req.session.authorization["accessToken"];
+    console.log(`Inside friends auth token:${token}`);
     jwt.verify(token, "access", (err, user) => {
+      console.log(`Inside friends auth verify token:${token}`);
       if (!err) {
         req.user = user;
         next();
@@ -71,6 +74,7 @@ app.post("/login", (req, res) => {
       accessToken,
       username,
     };
+    console.log(`accessToken:${accessToken},username:${username}`);
     return res.status(200).send("User successfully logged in");
   } else {
     return res
